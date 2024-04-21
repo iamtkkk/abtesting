@@ -1,0 +1,76 @@
+  nav {
+    box-shadow: 0px 2px 10px 2px rgba(19, 22, 23, 0.5);
+  }
+
+
+  .buy-button {
+    background: #A62929;
+    color: #FFF;
+    border-radius: 30px;
+  }
+
+  .nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .buy-btn {
+    border-radius: 40px;
+    border: 2px solid #A62929;
+    background: #FFF;
+    color: #A62929;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .buy-btn:hover {
+    background: #A62929;
+    color: #FFF;
+  }
+
+  .buy-btn-2 {
+    border-radius: 40px;
+    border: 2px solid #A62929;
+    background: #FFF;
+    color: #A62929;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .buy-btn-2:hover {
+    background: #A62929;
+    color: #FFF;
+  }
+  
+
+  .sticky-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+  }
+
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .image-container img {
+    display: block;
+  }
+  
+  .image-container button {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .image-container .nbtn {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-80%, -50%);
+  }

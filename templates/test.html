@@ -1,0 +1,29 @@
+<button id="randomClickButton">Generate Random Click Action</button>
+<input type="number" id="numActions" min="1" value="1">
+<label for="numActions">Number of Actions</label>
+
+<script>
+    document.getElementById('randomClickButton').addEventListener('click', function() {
+        const numActions = document.getElementById('numActions').value;
+        fetch('/api/generate-random-click-action', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ num_actions: parseInt(numActions) }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            alert(data.success || data.error);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+</script>

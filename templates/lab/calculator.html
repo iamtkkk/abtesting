@@ -1,0 +1,382 @@
+<!-- lab/dashboard.html -->
+{% extends 'layout/layout_lab.html' %} {% block title %}Title{% endblock %} {%
+block content %} {% with messages = get_flashed_messages() %} {% if messages %}
+<div class="alert alert-success">{{ messages[0] }}</div>
+{% endif %} {% endwith %} {% include './components/navLab.html' %}
+
+<section class="px-4 py-2 row" style="margin-top: 3rem;">
+
+    <div class="col-3 container d-flex flex-column gap-3">
+        <form>
+            <select class="form-select" style="width: 100%;" name="button" onchange="this.form.submit()">
+                <option value="save" {% if request.args.get('button')=='save' %} selected {% endif %}>Buy</option>
+                <option value="register" {% if request.args.get('button')=='register' %} selected {% endif %}>
+                    Register</option>
+                <option value="login" {% if request.args.get('button')=='login' %} selected {% endif %}>Login
+                </option>
+                <option value="viewmore" {% if request.args.get('button')=='viewmore' %} selected {% endif %}>View
+                    more</option>
+                <option value="all" {% if request.args.get('button')=='all' %} selected {% endif %}>All</option>
+            </select>
+        </form>
+        <form class=" d-flex flex-column gap-3">
+
+
+
+            <div class="d-flex flex-row gap-1">
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="number"
+                        value="{% if request.args.get('visitors_a') is not none %}{{ request.args.get('visitors_a') }}{% else %}50000{% endif %}"
+                        id="visitors_a" name="visitors_a" class="form-control form-control-lg" />
+                    <label class="form-label" for="visitors_a">Visitors A</label>
+                </div>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="increaseValue('visitors_a')">+</a>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="decreaseValue('visitors_a')">-</a>
+            </div>
+
+            <div class="d-flex flex-row gap-1">
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="number"
+                        value="{% if request.args.get('conversions_a') is not none %}{{ request.args.get('conversions_a') }}{% else %}1500{% endif %}"
+                        id="conversions_a" name="conversions_a" class="form-control form-control-lg" />
+
+                    <label class="form-label" for="conversions_a">Conversion A</label>
+                </div>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="increaseValue('conversions_a')">+</a>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="decreaseValue('conversions_a')">-</a>
+            </div>
+
+            <div class="d-flex flex-row gap-1">
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="number"
+                        value="{% if request.args.get('visitors_b') is not none %}{{ request.args.get('visitors_b') }}{% else %}50000{% endif %}"
+                        id="visitors_b" name="visitors_b" class="form-control form-control-lg" />
+                    <label class="form-label" for="visitors_b">Visitors B</label>
+                </div>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="increaseValue('visitors_b')">+</a>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="decreaseValue('visitors_b')">-</a>
+            </div>
+
+            <div class="d-flex flex-row gap-1">
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="number"
+                        value="{% if request.args.get('conversions_b') is not none %}{{ request.args.get('conversions_b') }}{% else %}1560{% endif %}"
+                        id="conversions_b" name="conversions_b" class="form-control form-control-lg" />
+                    <label class="form-label" for="conversions_b">Conversion B</label>
+                </div>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="increaseValue('conversions_b')">+</a>
+                <a class="btn btn-secondary d-flex align-items-center py-1 px-3 fw-bold"
+                    onclick="decreaseValue('conversions_b')">-</a>
+            </div>
+            <div>
+                <label for="significance_level" class="form-label">Significance level</label>
+                <select class="form-select" name="significance_level" id="significance_level">
+                    <option value="0.05" {% if request.args.get('significance_level')=='0.05' %} selected {% endif %}>
+                        95%
+                    </option>
+                    <option value="0.10" {% if request.args.get('significance_level')=='0.10' %} selected {% endif %}>
+                        90%
+                    </option>
+                    <option value="0.01" {% if request.args.get('significance_level')=='0.01' %} selected {% endif %}>
+                        99%
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="method" class="form-label">One vs. two tail</label>
+                <select class="form-select" name="method" id="method">
+                    <option value="two" {% if request.args.get('method')=='two' %} selected {% endif %}>Two tail
+                    </option>
+                    <option value="one" {% if request.args.get('method')=='one' %} selected {% endif %}>One tail
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" id="calbtn" class="btn w-100"
+                    style="background-color: #5EC57E;color: white;">Calculate</button>
+            </div>
+            <div>
+                <a href="/lab/calculator" class="btn w-100" style="background-color: #5F5F5F;color: white;">Clear
+                    all</a>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary w-100" hidden id="filldata"
+                    onclick="fillData('{{data.visitors_count.A}}', '{{data.visitors_click.A_save}}', '{{data.visitors_count.B}}', '{{data.visitors_click.B_save}}')">Fill
+                    data</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-9">
+        <h2 class="fw-bold">เครื่องคิดเลขทดสอบ A/B Testing</h2>
+        <p> กรุณาป้อนข้อมูลทดสอบของคุณลงในแถบด้านข้าง เครื่องมือของเราจะทำการคำนวณการทดสอบ A/B และคำนวณความสำคัญทางสถิติ
+        </p>
+
+        {% if test.visitors_A != 999999 %}
+        {% if isSignificant %}
+            <div class="my-4 d-flex flex-row gap-2 align-content-center align-items-center">
+                <img src="{{ url_for('static', filename='img/issig.png') }}" alt="reach" class=""
+                    style="width: 50px;height:50px">
+                <h3 class="fw-bold " id="result_val" style="color: #5EC57E;">การทดสอบ A/B ของคุณมีนัยสำคัญทางสถิติ!</h3>
+            </div>
+            {% if test.visitors_A != 999999 %}
+                <p>
+                    {% if isSignificant %}
+                    การทดสอบ A/B ของคุณมีนัยสำคัญทางสถิติ!
+                    {% if isAmB %}
+                    <span class="h5 fw-bold " style="color: #5EC57E;">ตัวแปร A</span> เกิดอัตราการคลิกที่มากกว่า <span class="h5 fw-bold " style="color: #5EC57E;">ตัวแปร <span class="h5 fw-bold ">B
+                        อยู่ที่ {{"{:.2f}".format(xper)}}%</span>
+                    <br>
+                    ฉันมั่นใจว่าการปรับรูปแบบให้เป็น <span style="color: #5EC57E;">ตัวแปร A</span>
+                    จะเพิ่มประสิทธิภาพให้เว็บของคุณ
+                    {% else %}
+                    <span class="fw-bold" style="color: #5EC57E;">ตัวแปร B</span> เกิดอัตราการคลิกที่มากกว่า <span class="fw-bold" style="color: #5EC57E;">ตัวแปร A
+                        อยู่ที่ {{"{:.2f}".format(xper)}}%</span>
+                    <br>
+                    ฉันมั่นใจว่าการปรับรูปแบบให้เป็น <span class="fw-bold" style="color: #5EC57E;">ตัวแปร B</span>
+                    จะเพิ่มประสิทธิภาพให้เว็บของคุณ
+                    {% endif %}
+                    {% else %}
+                    <span class="fw-bold" style="color: #E4A11C;">
+                        การทดสอบ A/B ของคุณไม่มีนัยสำคัญทางสถิติ
+                    </span>
+                    {% endif %}
+                </p>
+            {% endif %}
+        {% else %}
+                <div class="my-4 d-flex flex-row gap-2 align-content-center align-items-center">
+                    <img src="{{ url_for('static', filename='img/nosig.png') }}" alt="reach" class=""
+                        style="width: 50px;height:50px">
+                    <h3 class="fw-bold " id="result_val" style="color: #E4A11C;">การทดสอบ A/B ของคุณไม่มีนัยสำคัญทางสถิติ
+                </div>
+
+            {% if isAmB %}
+                    <p class="fw-bold">แนะนำให้ทำการทดสอบอีกครั้ง เนื่องจากไม่มีหลักฐานมากพอที่จะ สูจน์ความต่างอย่างมีนัยสำคัญ ระหว่าง <span class="fw-bold" style="color: #E4A11C;">ตัวแปร A</span> และ <span class="fw-bold" style="color: #E4A11C;">ตัวแปร B.</span></p>
+            {% else %}
+                    <p class="fw-bold">แนะนำให้ทำการทดสอบอีกครั้ง เนื่องจากไม่มีหลักฐานมากพอที่จะ สูจน์ความต่างอย่างมีนัยสำคัญ ระหว่าง <span class="fw-bold" style="color: #E4A11C;">ตัวแปร A</span> และ <span class="fw-bold" style="color: #E4A11C;">ตัวแปร B.</span></p>
+            {% endif %}
+        {% endif %}
+        {% endif %}
+
+
+
+
+        <div class="my-4">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Visitors</th>
+                        <th scope="col">Conversions</th>
+                        <th scope="col">Conversion rate</th>
+                        <!-- <th scope="col">Power</th> -->
+                        <th scope="col">Z-score</th>
+                        <th scope="col">P-value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">A</th>
+                        <th scope="row" class="resultcal">{{test.visitors_A if test.visitors_A != 999999 else "" }}</th>
+                        <th scope="row" class="resultcal">{{test.conversions_A if test.visitors_A != 999999 else ""}}
+                        </th>
+                        <th scope="row" class="resultcal" class="resultcal">{{ (test.conversions_A / test.visitors_A *
+                            100) | round(2) if test.visitors_A != 999999 else ""}} %</th>
+
+                        <th scope="row">-</th>
+                        <th scope="row">-</th>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">B</th>
+                        <th scope="row" class="resultcal">{{test.visitors_B if test.visitors_A != 999999 else ""}}</th>
+                        <th scope="row" class="resultcal">{{test.conversions_B if test.visitors_A != 999999 else ""}}
+                        </th>
+                        <th scope="row" class="resultcal">{{ (test.conversions_B / test.visitors_B * 100) | round(2) if
+                            test.visitors_A != 999999 else ""}} %</th>
+
+                        <!--
+                        <th scope="row">
+                            {{power | round(4) * 100}} %
+                        </th>
+                    -->
+                        <th scope="row" class="resultcal">
+                            {{z_score | round(4) if test.visitors_A != 999999 else ""}}
+                        </th>
+                        <th scope="row" class="resultcal">
+                            {{p_value | round(4) if test.visitors_A != 999999 else ""}}
+                        </th>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        {% if test.visitors_A != 999999 %}
+
+        <canvas id="mainChart"></canvas>
+
+        {% endif %}
+
+        <pre class="mt-5">
+<span class="fw-bold">A/B testing ย่อมาจากอะไร</span>
+    ในการทดสอบ A/B คุณกำลังทดสอบสองตัวแปรเพื่อเปรียบเทียบกัน – ตัวแปร A และตัวแปร B ตัวแปร A เป็นตัวแปรต้น (หรือที่เรียกว่าตัวควบคุม) และ B เป็นการทำซ้ำของตัวแปร A
+แต่มีการปรับเปลี่ยนเพียงเล็กน้อย นอกจากนี้คุณยังสามารถเพิ่มตัวแปรเพิ่มเติม (C, D, E … ฯลฯ ) แต่เพื่อให้ได้ผลลัพธ์ที่มีนัยสำคัญทางสถิติ
+เราขอแนะนำให้ทดสอบ A เทียบกับ B
+</pre>
+        <hr />
+
+        <pre>
+<span class="fw-bold">คุณจะทำการทดสอบ A/B ได้อย่างไร</span>
+    ในการเรียกใช้การทดสอบ A/B คุณจะต้องมีหน้าต้นฉบับหรือหน้าควบคุม (ตัวแปร A) เมื่อคุณสร้างหน้าควบคุมของตัวแปร A เสร็จแล้วคุณจะต้องทำซ้ำ จากนั้นแก้ไของค์ประกอบเล็ก ๆ น้อย ๆ
+บนหน้าเพื่อสร้างตัวแปร B ซึ่งอาจเป็นข้อความส่วนเล็ก ๆ หัวข้อ ปุ่มคำกระตุ้นการตัดสินใจ หรือแม้แต่ สีหรือรูปแบบของแบบอักษรที่ใช้ 
+คุณจะต้องแสดงรูปแบบทั้งสองนี้ต่อจำนวนผู้ชมที่ใกล้เคียงกันเป็นระยะเวลาไม่น้อยกว่าหนึ่งสัปดาห์ 
+จากข้อมูลที่รวบรวมในระหว่างสัปดาห์คุณจะสามารถระบุได้ว่าตัวแปรใดที่มีอัตราการเกิดกิจกรรมสูงสุดและจะเรียกว่าตัวแปรผลลัพธ์
+</pre>
+        <hr />
+
+        <pre>
+<span class="fw-bold">คุณควรทำการทดสอบ A/B นานแค่ไหน</span>
+    คุณต้องทำการทดสอบ A/B ให้นานที่สุดเพื่อให้ได้ผลลัพธ์ที่มีนัยสำคัญทางสถิติ จำนวนผู้ใช้งานเว็บไซต์เป็นกุญแจสำคัญ หากหน้าเว็บไซต์มีผู้เข้าชม 1 ล้านคนต่อวัน การทดสอบ A/B 
+อาจแสดงผลลัพธ์ที่ชัดเจนได้ในไม่กี่ชั่วโมง หน้าเว็บไซต์ที่มีผู้เยี่ยมชม 2 คนต่อวันอาจใช้เวลาหนึ่งปีเพื่อแสดงผลลัพธ์ที่มีนัยสำคัญทางสถิติ พฤติกรรมของผู้ใช้มักจะแตกต่างกันไปตลอดทั้งสัปดาห์ 
+ดังนั้นเราขอแนะนำให้ทำการทดสอบ A/B เป็นเวลาอย่างน้อยหนึ่งสัปดาห์เต็ม
+</pre>
+        <hr />
+
+        <pre>
+<span class="fw-bold">นัยสำคัญทางสถิติคืออะไร</span>
+    นัยสำคัญทางสถิติคือความเป็นไปได้ที่สาเหตุที่ทำให้ตัวแปรหนึ่งแข็งแกร่งกว่าอีกตัวหนึ่งนั้นเกิดจากสิ่งอื่นที่ไม่ใช่ความบังเอิญ 
+หมายความว่าคุณสามารถสรุปได้อย่างน่าเชื่อถือว่าตัวแปรผลลัพธ์นั้นน่าเชื่อถือกว่า เนื่องจากการเปลี่ยนแปลงที่คุณทำ 
+คุณสามารถใช้เครื่องคำนวณความสำคัญทางสถิติของเราได้โดยที่ไม่มีค่าใช้จ่ายแอบแฝง เพื่อวางแผนการทดสอบ A/B
+</pre>
+
+
+        <!--
+
+        <p>
+            According to the null hypothesis, there is no difference between the means. The plot below shows the
+            distribution of the difference of the means that we would expect under the null hypothesis.
+        </p>
+    -->
+
+        <!--
+        <div class="container">
+            <img width="60%" src="data:image/png;base64,{{ fig_test }}" alt="Test Visualization">
+        </div>
+    -->
+
+        <!--
+
+        <p>
+            The shaded areas cover 5% of the distribution. It is because the observed mean of the variant falls into
+            this area that we can reject the null hypothesis with 95% confidence.
+
+            Statistical Power
+            Power is a measure of how likely we are to detect a difference when there is one with 80% being the
+            generally accepted threshold for statistical validity. The power for your test is 100.00%
+
+            An alternative way of defining power is that it is our likelihood of avoiding a Type II error or a false
+            negative. Therefore the inverse of power is 1 - 100.00% = 0.00% which is our likelihood of a type II error.
+        </p>
+    -->
+
+
+        <!--
+        <div class="container">
+            <img width="60%" src="data:image/png;base64,{{ fig_power }}" alt="Power Plot">
+        </div>
+    -->
+
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    function fillData(visitors_a, conversions_a, visitors_b, conversions_b) {
+        document.getElementById('visitors_a').value = visitors_a;
+        document.getElementById('conversions_a').value = conversions_a;
+        document.getElementById('visitors_b').value = visitors_b;
+        document.getElementById('conversions_b').value = conversions_b;
+    }
+
+    function createChart(chartType, chartElementId, chartDataConfig) {
+        const ctx = document.getElementById(chartElementId);
+        new Chart(ctx, {
+            type: chartType,
+            data: chartDataConfig.data,
+            options: chartDataConfig.options
+        });
+    }
+
+    const barChartData = {
+        type: 'bar',
+        labels: JSON.parse('{{data.bar_chart.labels | tojson | safe}}'),
+        datasets: [
+            {
+                label: 'Conversion Rate ',
+                data: JSON.parse('{{data.bar_chart.dataA | tojson | safe}}'),
+                borderWidth: 1,
+                backgroundColor: ['#89CFF0', '#F8C8DC'],
+            },
+        ]
+    };
+
+    const barChartConfig = {
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            var label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y.toFixed(2) + '%'; // Format to two decimal places
+                            }
+                            return label;
+                        }
+                    }
+                },
+
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: function (value, context) {
+                        return value.toFixed(2) + '%'; // Format to two decimal places
+                    },
+                    color: 'red' // Custom text color for data labels
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    };
+
+
+    createChart('bar', 'mainChart', { data: barChartData, options: barChartConfig.options });
+
+    //onload fill data
+    window.onload = function () {
+        document.getElementById('filldata').click();
+
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,265 @@
+<!-- templates/index.html -->
+
+{% extends 'layout/layout_login.html' %} {% block title %}Title{% endblock %} {%
+block content %} {% with messages = get_flashed_messages() %} {% if messages %}
+<div class="alert alert-success">{{ messages[0] }}</div>
+{% endif %} {% endwith %} {% include './components/nav3.html' %}
+
+<section class="d-flex justify-content-around container-fluid"
+  style="margin-top: 5rem; background-color: rgb(244, 244, 244)">
+  <div class="d-flex flex-column justify-content-center align-content-center text-center">
+    <img src="{{ url_for('static', filename='img/main/top-img.png') }}" alt="" />
+  </div>
+
+  <div class="d-flex flex-column justify-content-center align-content-center text-center">
+    <h1 class="fw-bold">New Collection</h1>
+    <h4>สมาชิกลด 10%</h4>
+    <div>
+      <button class="btn btn-dark fw-bold fs-5" id="buyB" name="buyB" onclick="handleButtonClick('B')">
+        สั่งซื้อเลย
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="container my-2 py-2">
+  <div class="d-flex justify-content-between my-3">
+    <div>
+      <h2 class="fw-bold">สินค้าขายดี</h2>
+    </div>
+    <div>
+      <!-- left and right icon use bi-->
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-arrow-left fs-4 fw-bold"></i>
+      </button>
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-arrow-right fs-4 fw-bold"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between gap-4">
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='img/main/section-1/image 6.png') }}" alt="" class="img-fluid" />
+      <button class="btn fw-bold text-white fs-5 my-2 nbtn w-75" style="background-color: #F398C1;">BEST SELLER</button>
+
+      <button class="btn btn-light fw-bold shadow-sm" onclick="handleButtonClick('B', 'viewmore')">ดูเพิ่มเติม</button>
+    </div>
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='img/main/section-1/image 7.png') }}" alt="" class="img-fluid" />
+      <button class="btn btn-light fw-bold shadow-sm" onclick="handleButtonClick('B', 'viewmore')">ดูเพิ่มเติม</button>
+    </div>
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='img/main/section-1/image 8.png') }}" alt="" class="img-fluid" />
+      <button class="btn btn-light fw-bold shadow-sm" onclick="handleButtonClick('B', 'viewmore')">ดูเพิ่มเติม</button>
+    </div>
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='img/main/section-1/image 9.png') }}" alt="" class="img-fluid" />
+      <button class="btn btn-light fw-bold shadow-sm" onclick="handleButtonClick('B', 'viewmore')">ดูเพิ่มเติม</button>
+    </div>
+  </div>
+</section>
+
+<section class="container my-2 py-2">
+  <h1 class="fw-bold text-center">สินค้าทั้งหมด</h1>
+  <div class="d-flex justify-content-between gap-4">
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 10.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Cherry cake</h4>
+        <p>ราคา 390.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 11.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Babytee Black/White</h4>
+        <p>ราคา 290.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 12.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Crop top</h4>
+        <p>ราคา 330.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 13.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Crop top Black/White</h4>
+        <p>ราคา 260.-</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between gap-4">
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 14.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Babytee Black/White</h4>
+        <p>ราคา 290.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 15.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Babytee Black/White</h4>
+        <p>ราคา 290.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 16.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Crop top Black/White</h4>
+        <p>ราคา 260.-</p>
+      </div>
+    </div>
+    <div class="image-container-card">
+      <img src="{{ url_for('static', filename='img/main/section-2/image 17.png') }}" alt="" class="img-fluid" />
+      <div class="p-2">
+        <h4>Crop top Black/Whitee</h4>
+        <p>ราคา 260.-</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="d-flex justify-content-around container">
+  <div class="d-flex flex-column justify-content-center align-content-center text-start">
+    <h1 class="fw-bold">โปรโมชั่นสำหรับสมาชิก</h1>
+    <h5>
+      รับส่วนลด 10% และ ส่งฟรีลงทะเบียน สำหรับผู้ที่สมัครสมาชิก
+      และล็อคอินเว็บไซต์ สินค้ามีจำนวนจำกัด
+    </h5>
+    <div>
+      <button class="btn fw-bold text-white fs-5" onclick="handleButtonClick('B', 'register')"
+        style="background-color: #F398C1;">สมัครสมาชิก</button>
+    </div>
+  </div>
+  <div class="d-flex flex-column justify-content-center align-content-center text-center">
+    <img src="{{ url_for('static', filename='img/main/bot-img.png') }}" alt="" />
+  </div>
+</section>
+
+<section class="container my-2 py-2">
+  <div class="d-flex justify-content-between my-3">
+    <div>
+      <h2 class="fw-bold">ความคิดเห็นจากลูกค้า</h2>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-arrow-left fs-4 fw-bold"></i>
+      </button>
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-arrow-right fs-4 fw-bold"></i>
+      </button>
+    </div>
+  </div>
+  <div class="d-flex flex-row gap-4">
+    <div class="shadow-sm p-3 rounded d-flex flex-column" style="width: 300px">
+      <div class="d-flex flex-row gap-2 align-items-center">
+        <img src="{{ url_for('static', filename='img/main/person.png') }}" alt="" />
+        <h5 class="fw-bold">hushsh1</h5>
+      </div>
+
+      <div class="d-flex flex-row gap-1">
+        {% for i in range(5): %}
+        <img src="{{ url_for('static', filename='img/main/star.png') }}" alt="" />
+        {% endfor %}
+      </div>
+      <div>เนื้อผ้าบางเบาใส่สบายมากๆค่ะ ราคาก็ดี ไว้มาสั่งใหม่นะคะ</div>
+    </div>
+
+    <div class="shadow-sm p-3 rounded d-flex flex-column" style="width: 300px">
+      <div class="d-flex flex-row gap-2 align-items-center">
+        <img src="{{ url_for('static', filename='img/main/person.png') }}" alt="" />
+        <h5 class="fw-bold">fahsaixxx</h5>
+      </div>
+
+      <div class="d-flex flex-row gap-1">
+        {% for i in range(5): %}
+        <img src="{{ url_for('static', filename='img/main/star.png') }}" alt="" />
+        {% endfor %}
+      </div>
+      <div>
+        สวยมากโซคิ้วสุดๆ คุ้มเกินราคามาก
+        เพื่อนเห็นแล้วอยากได้ตามเลยกลับมาซื้อซ้ำให้เพื่อน
+      </div>
+    </div>
+
+    <div class="shadow-sm p-3 rounded d-flex flex-column" style="width: 300px">
+      <div class="d-flex flex-row gap-2 align-items-center">
+        <img src="{{ url_for('static', filename='img/main/person.png') }}" alt="" />
+        <h5 class="fw-bold">j5555kk</h5>
+      </div>
+
+      <div class="d-flex flex-row gap-1">
+        {% for i in range(5): %}
+        <img src="{{ url_for('static', filename='img/main/star.png') }}" alt="" />
+        {% endfor %}
+      </div>
+      <div>
+        พึ่งรู้จักแบรนด์นี้งื้อออ ดีย์อะไรแบบนี้ ผลิตลายใหม่มาเรื่อยๆนะคะ
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container my-2 py-2 d-flex justify-content-center flex-column">
+  <h1 class="fw-bold text-center">ช่องทางโซเชียลมีเดีย</h1>
+
+  <div class="d-flex justify-content-center gap-4">
+    <div class="d-flex flex-row gap-3">
+      <div class="shadow-sm p-3 rounded d-flex flex-column justify-content-center" style="width: 300px">
+        <img src="{{ url_for('static', filename='img/favicon2.png') }}" alt="" />
+
+        <div class="d-flex flex-row justify-content-center gap-1">
+          <img src="{{ url_for('static', filename='img/main/ig.png') }}" alt="" />
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row gap-3">
+      <div class="shadow-sm p-3 rounded d-flex flex-column justify-content-center" style="width: 300px">
+        <img src="{{ url_for('static', filename='img/favicon2.png') }}" alt="" />
+
+        <div class="d-flex flex-row justify-content-center gap-1">
+          <img src="{{ url_for('static', filename='img/main/fb.png') }}" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center gap-4" style="margin-top: 3rem">
+    <div class="d-flex flex-row gap-3">
+      <div class="d-flex justify-content-center align-items-center text-center p-3 rounded flex-column gap-3"
+        style="width: 300px">
+        <img src="{{ url_for('static', filename='img/main/box.png') }}" alt="" width="40" height="40" />
+        <div>
+          <h5 class="fw-bold">จัดส่งฟรี</h5>
+          <p>เมื่อซื้อครบ 500.- ขึ้นไป</p>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center text-center p-3 rounded flex-column gap-3"
+        style="width: 300px">
+        <img src="{{ url_for('static', filename='img/main/hset.png') }}" alt="" width="40" height="40" />
+        <div>
+          <h5 class="fw-bold">ติดต่อแอดมิน</h5>
+          <p>แชทกับเราได้ตลอด 24 ชั่วโมง</p>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center text-center p-3 rounded flex-column gap-3"
+        style="width: 300px">
+        <img src="{{ url_for('static', filename='img/main/pay.png') }}" alt="" width="40" height="40" />
+        <div>
+          <h5 class="fw-bold">ชำระเงิน</h5>
+          <p>ช่องทางการชำระเงิน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %} {% block footer %} {% include 'footer.html' %} {% endblock %}

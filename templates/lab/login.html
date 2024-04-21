@@ -1,0 +1,76 @@
+{% extends 'layout/layout_login.html' %} {% block title %}Title{% endblock %}
+{%block content %} {% with messages = get_flashed_messages() %} {% if messages
+%}
+<div class="alert alert-success">{{ messages[0] }}</div>
+{% endif %} {% endwith %}
+
+<section class="d-flex flex-column justify-content-center container-fluid bg-white vh-100">
+
+  <div class="container d-flex justify-content-center align-items-center flex-column my-4">
+    <img
+      src="{{ url_for('static', filename='img/lab/logo2.png') }}"
+      alt="Logo Lab"
+    />
+    <img
+      src="{{ url_for('static', filename='img/lab/logotext.png') }}"
+      alt="Logo Lab"
+    />
+  </div>
+
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="p-4 w-50" >
+      {% if success %}
+      <div class="alert alert-success">{{ success }}</div>
+      {% endif %} {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      <h2 class="text-start mb-5">เข้าสู่ระบบ</h2>
+
+      <form
+        action="{{ url_for('labAPI.login_admin_lab') }}"
+        method="post"
+        class="container"
+      >
+        <div class="form-group">
+          <label for="email" class="h6 form-label">อีเมล :</label>
+          <input
+            class="form-control with-line"
+            type="text"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password" class="h6 form-label">รหัสผ่าน :</label>
+          <input
+            class="form-control with-line"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+
+        <div
+          class="text-center row justify-content-center"
+          style="margin-top: 3rem"
+        >
+          <button
+            class="btn text-center p-1 fs-4 fw-bold"
+            style="border-radius: 30px; background-color: #5EC57E; color: white"
+            type="submit"
+          >
+            เข้าสู่ระบบ
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

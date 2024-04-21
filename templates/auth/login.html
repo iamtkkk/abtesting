@@ -1,0 +1,73 @@
+{% extends 'layout/layout_login.html' %} {% block title %}Login{% endblock %} {%
+block header %}{% endblock %} {% block content %}
+
+<style>
+  .with-line {
+    border-radius: 30px;
+    border: 2px solid #F398C1;
+  }
+</style>
+<div class="d-flex justify-content-between vh-100">
+  <div>
+    <img src="{{ url_for('static', filename='img/left-section.png') }}" alt="Leaf" width="550" 
+    id="left-section"
+    />
+  </div>
+
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="shadow-lg p-4 w-50" style="border-radius:18px">
+      {% if success %}
+      <div class="alert alert-success">{{ success }}</div>
+      {% endif %} {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      <h2 class="text-center mb-5">เข้าสู่ระบบ</h2>
+
+      <form action="{{ url_for('authAPI.login') }}" method="post" class="container">
+        <input type="hidden" name="page" value="A">
+        <div class="form-group">
+          <label for="email" class="h6 form-label">อีเมล :</label>
+          <input class="form-control with-line" type="text" name="email" id="email" placeholder="Email" required />
+        </div>
+        <div class="form-group">
+          <label for="password" class="h6 form-label">รหัสผ่าน :</label>
+          <input class="form-control with-line" type="password" name="password" id="password" placeholder="Password"
+            required />
+        </div>
+
+        <div class="text-center row justify-content-center" style="margin-top: 3rem">
+          <button class="btn text-center p-1 fs-4 fw-bold"
+            style="border-radius: 30px; background-color: #F398C1; color: white;" type="submit">
+            Login
+          </button>
+        </div>
+      </form>
+
+      <p class="text-center justify-content-center mt-4 fw-bold">
+        <a href="/auth/register">สร้างบัญชีใหม่ </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+
+  if (page) {
+    if (page === 'A') {
+      document.getElementsByName('page')[0].value = 'A';
+      document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-section.png') }}";
+    } else if (page === 'B') {
+      document.getElementsByName('page')[0].value = 'B';
+      document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-sectionB.png') }}";
+    }
+  }else{
+    document.getElementsByName('page')[0].value = 'A';
+    document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-section.png') }}";
+  }
+
+</script>
+
+{% endblock %} {% block footer %} {% endblock %}

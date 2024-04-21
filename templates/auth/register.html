@@ -1,0 +1,152 @@
+{% extends 'layout/layout_login.html' %} {% block title %}Register{% endblock %}
+{% block header %}{% endblock %} 
+
+{% block content %}
+
+<style>
+  .with-line {
+    border-radius: 30px;
+    border: 2px solid #f398c1;
+  }
+</style>
+
+<div class="d-flex justify-content-between vh-100">
+  <div>
+    <img
+      src="{{ url_for('static', filename='img/left-section.png') }}"
+      alt="Leaf"
+      width="550"
+      id="left-section"
+    />
+  </div>
+
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="shadow-lg p-4 w-50" style="border-radius: 18px">
+      {% if success %}
+      <div class="alert alert-success">{{ success }}</div>
+      {% endif %} {% if error %}
+      
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      <h2 class="text-center mb-5">สร้างบัญชีใหม่</h2>
+
+      <form
+        id="register-form"
+        action="{{ url_for('authAPI.register') }}"
+        method="post"
+        class="container"
+      >
+      <input type="hidden" name="page" value="A">
+
+        <div class="form-group">
+          <label for="fullname" class="h6 form-label">ชื่อผู้ใช้ :</label>
+          <input
+            class="form-control with-line"
+            type="text"
+            name="fullname"
+            id="fullname"
+            placeholder="fullname"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email" class="h6 form-label">อีเมล :</label>
+          <input
+            class="form-control with-line"
+            type="text"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password" class="h6 form-label">รหัสผ่าน :</label>
+          <input
+            class="form-control with-line"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="re-password" class="h6 form-label"
+            >ยืนยันรหัสผ่าน :</label
+          >
+          <input
+            class="form-control with-line"
+            type="password"
+            name="re-password"
+            id="re-password"
+            placeholder="Re-Password"
+            required
+          />
+          <small id="passwordMatchError" class="text-danger"></small>
+        </div>
+
+        <div
+          class="text-center row justify-content-center"
+          style="margin-top: 3rem"
+        >
+          <button
+            class="btn text-center p-1 fs-4 fw-bold"
+            style="border-radius: 30px; background-color: #f398c1; color: white"
+            type="submit"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+
+      <p class="text-center justify-content-center mt-4 fw-bold">
+        <a href="/auth/login">เข้าสู่ระบบ</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", function (event) {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("re-password").value;
+      var passwordMatchError = document.getElementById("passwordMatchError");
+      if (password !== confirmPassword) {
+        passwordMatchError.textContent = "Passwords do not match";
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Passwords do not match!",
+        });
+        event.preventDefault();
+      } else {
+        passwordMatchError.textContent = "";
+      }
+    });
+</script>
+
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+
+  if (page) {
+    if (page === 'A') {
+      document.getElementsByName('page')[0].value = 'A';
+      document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-section.png') }}";
+    } else if (page === 'B') {
+      document.getElementsByName('page')[0].value = 'B';
+      document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-sectionB.png') }}";
+    }
+  }else{
+    document.getElementsByName('page')[0].value = 'A';
+    document.getElementById('left-section').src = "{{ url_for('static', filename='img/left-section.png') }}";
+  }
+
+</script>
+
+{% endblock %} {% block footer %}{% endblock %}

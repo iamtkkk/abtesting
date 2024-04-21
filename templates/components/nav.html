@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg py-2 sticky-nav" style="z-index: 9999">
+  <div class="container-fluid px-4">
+    <button class="navbar-toggler w-100 d-flex justify-content-between d-lg-none" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 448 512">
+        <path fill="#4b1212"
+          d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+      </svg>
+      <span class="navbar-toggler-icon"></span>
+      <img loading="lazy" src="{{ url_for('static', filename='img/favicon.png') }}" width="50" alt="logo"
+        class="d-inline-block align-text-top" aria-hidden="true" />
+    </button>
+
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarContent">
+      <div class="d-none d-lg-flex align-items-center">
+        <img loading="lazy" src="{{ url_for('static', filename='img/favicon.png') }}" width="50" alt="logo"
+          aria-hidden="true" />
+        <div class="ms-2 fw-bold">Optimizer Lab</div>
+      </div>
+
+      <div>
+        <ul class="navbar-nav mb-2 mb-lg-0 gap-2 gap-lg-4 gap-md-4">
+          <li class="nav-item">
+            <a href="{{ url_for('defaultAPI.static_route', page='admin-panel') }}"
+              class="nav-link fw-bold text-dark">หน้าแรก</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('defaultAPI.static_route', page='service') }}" class="nav-link fw-bold text-dark">บริการ</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('defaultAPI.static_route', page='aboutus') }}"
+              class="nav-link fw-bold text-dark">เกี่ยวกับเรา</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('defaultAPI.static_route', page='contactus') }}"
+              class="nav-link fw-bold text-dark">ติดต่อเรา</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        {% if 'user_id' in session %}
+        <a href="{{ url_for('authAPI.logout') }}" class="btn fs-6 btn-dark fw-bold text-bg-white">Logout</a>
+        {% else %}
+
+        <ul class="navbar-nav my-2">
+          <li class="nav-item d-flex px-0 px-lg-3 px-md-3">
+            <a class="nav-link fw-bold text-dark" href="#">สมัครใช้งาน</a>
+          </li>
+          <li class="nav-item d-flex px-0 px-lg-3 px-md-3">
+            <a class="nav-link fw-bold text-dark" href="#">เข้าสู่ระบบ</a>
+          </li>
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,352 @@
+<!-- lab/dashboard.html -->
+
+{% extends 'layout/layout_lab.html' %} {% block title %}Title{% endblock %} {%
+block content %} {% with messages = get_flashed_messages() %} {% if messages %}
+<div class="alert alert-success">{{ messages[0] }}</div>
+{% endif %} {% endwith %} {% include './components/navLab.html' %}
+
+<style>
+    .container-bar {
+        background-color: rgb(192, 192, 192);
+        width: 80%;
+        border-radius: 15px;
+    }
+
+    .progress-value {
+        background-color: rgb(116, 194, 92);
+        color: white;
+        padding: 1%;
+        text-align: right;
+        font-size: 20px;
+        border-radius: 15px;
+    }
+
+    .weba {
+        width: 80%;
+    }
+
+    .webb {
+        width: 60%;
+    }
+</style>
+
+
+<section class=" p-2 d-flex justify-content-center row gap-4" style="margin-top: 3rem;">
+    <div class="col-5 p-2 rounded" style="background-color: hsl(0, 0%, 96%);">
+        <div class="px-3 py-4 shadow-md rounded">
+            <h5 class="fw-bold">เลือกข้อมูลที่ต้องการนำมาทดสอบ</h5>
+
+            <form class="input-group gap-2" method="get" action="{{ url_for('labAPI.dashboard') }}">
+                <select class="form-select" name="page" onchange="this.form.submit()">
+                    <option value="all" {% if request.args.get('page')=='all' %} selected {% endif %}>All</option>
+                    <option value="A" {% if request.args.get('page')=='A' %} selected {% endif %}>A</option>
+                    <option value="B" {% if request.args.get('page')=='B' %} selected {% endif %}>B</option>
+                </select>
+
+                <select class="form-select" name="button" onchange="this.form.submit()">
+                    <option value="save" {% if request.args.get('button')=='save' %} selected {% endif %}>Buy</option>
+                    <option value="register" {% if request.args.get('button')=='register' %} selected {% endif %}>
+                        Register</option>
+                    <option value="login" {% if request.args.get('button')=='login' %} selected {% endif %}>Login
+                    </option>
+                    <option value="viewmore" {% if request.args.get('button')=='viewmore' %} selected {% endif %}>View
+                        more</option>
+                    <option value="all" {% if request.args.get('button')=='all' %} selected {% endif %}>All</option>
+                </select>
+
+            </form>
+
+        </div>
+
+        <div class="px-3 py-4 shadow-md rounded">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Visitors</th>
+                        <th scope="col">Conversions</th>
+                        <th scope="col"></th>
+                        <th scope="col">Conversion rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th {% if data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %} scope="row">A
+                        </th>
+                        <td {% if data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.visitors_count.A
+                            }}</td>
+                        <td {% if data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.visitors_click_A
+                            }}</td>
+                        <td {% if data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}><i
+                                class="fas fa-arrow-right-long"></i></td>
+                        <td {% if data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.convertion_rate_A
+                            }}%</td>
+                    </tr>
+
+                    <tr>
+                        <th {% if not data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}
+                            scope="row">B</th>
+                        <td {% if not data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.visitors_count.B }}</td>
+                        <td {% if not data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.visitors_click_B }}</td>
+                        <td {% if not data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}><i
+                                class="fas fa-arrow-right-long"></i></td>
+                        <td {% if not data.amoreb %}style="background-color: {{data.bg_color}};" {% endif %}>{{
+                            data.convertion_rate_B }}%</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-4">
+            <div class="px-3 py-4 shadow-md rounded">
+                <div class="card text-start p-1">
+                    <div class="d-flex flex-row gap-5 px-3 pt-3">
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <h5 class="fw-bold">Significant</h5>
+                            {% if isSignificant %}
+                            <h5 class="">{{ 'Yes' }}</h5>
+                            {% else %}
+                            <h5 class="">{{ 'No' }}</h5>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <h5 class="fw-bold">p value</h5>
+                            <h5 class="">{{"{:.4f}".format(data.frequentist.p_value)}}</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+
+                        {% if isSignificant %}
+                            <p class="h4 fw-bold mb-4" style="color: #5EC57E;">
+                                การทดสอบ A/B ของคุณมีนัยสำคัญทางสถิติ!
+                            </p>
+                            {% if data.amoreb %}
+                                <span class="h5 fw-bold "style="color: #5EC57E;">ตัวแปร A</span> เกิดอัตราการคลิกที่มากกว่า <span
+                                    class="h5 fw-bold " style="color: #5EC57E;">ตัวแปร B
+                                    อยู่ที่ {{"{:.2f}".format(xper)}}%</span>
+                                <br>
+                                ฉันมั่นใจว่าการปรับรูปแบบให้เป็น <span class="h5 fw-bold " style="color: #5EC57E;">ตัวแปร A</span>
+                                จะเพิ่มประสิทธิภาพให้เว็บของคุณ
+                            {% else %}
+                                <span class="h5 fw-bold " style="color: #5EC57E;">ตัวแปร B</span> เกิดอัตราการคลิกที่มากกว่า ตัวแปร <span
+                                    class="h5 fw-bold " style="color: #5EC57E;">A
+                                    อยู่ที่ {{"{:.2f}".format(xper)}}%</span>
+                                <br>
+                                ฉันมั่นใจว่าการปรับรูปแบบให้เป็น  <span class="h5 fw-bold " style="color: #5EC57E;">ตัวแปรB</span>
+                                จะเพิ่มประสิทธิภาพให้เว็บของคุณ
+                            {% endif %}
+                        {% else %}
+                            <p class="h4 fw-bold" style="color: #E4A11C;">
+                                การทดสอบ A/B ของคุณไม่มีนัยสำคัญทางสถิติ
+                            </p>
+                            <p>แนะนำให้ทำการทดสอบอีกครั้ง</p>
+                        {% endif %}
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <a class="btn btn-warning  fs-6 fw-bold w-25" href="/lab/calculator">ดูเพิ่มเติม</a>
+        </div>
+    </div>
+
+    <!-- Col - 2 -->
+    <div class="col-6 p-2 rounded " style="background-color: #F5F5F5;">
+        <!-- <div>
+            <h3 class="fw-bold">Page : {{data.page}}</h3>
+            <h3 class="fw-bold">Button : {{data.button}}</h3>
+        </div> -->
+        <div class="d-flex justify-content-center ">
+            <!-- <h4 class="fw-bold bg-white p-2 shadow-sm rounded">7 วันที่ผ่านมา</h4> -->
+
+        </div>
+        <div class="d-flex justify-content-center flex-column">
+            <form class="input-group gap-2" method="get" action="{{ url_for('labAPI.dashboard') }}">
+                <input type="hidden" name="page" value="{{ request.args.get('page') }}">
+                <input type="hidden" name="button" value="{{ request.args.get('button') }}">
+
+                <select class="form-select" name="time_frame" onchange="this.form.submit()">
+                    <option value="seven" {% if request.args.get('time_frame')=='seven' %} selected {% endif %}>7 วัน
+                    </option>
+                    <option value="half" {% if request.args.get('time_frame')=='half' %} selected {% endif %}>15 วัน
+                    </option>
+                    <option value="month" {% if request.args.get('time_frame')=='month' %} selected {% endif %}>30 วัน
+                    </option>
+                </select>
+            </form>
+
+            <canvas id="LineChart"></canvas>
+
+            <hr class="my-4">
+
+            <div class="d-flex flex-row  align-items-center gap-2 ">
+                <div class="p-2 bg-white rounded d-flex flex-column justify-content-center talign-items-center"
+                    style="height: 200px;width: 250px;">
+                    <h4 class="">Visitors</h4>
+                    <h1 class="text-center">
+                        {{ data.visitors_count_display }}
+                    </h1>
+                </div>
+
+                <div class="p-2 bg-white rounded" style="height: 200px;">
+                    <canvas id="horizonChart"></canvas>
+                </div>
+                <div class="p-2 bg-white d-flex align-items-center justify-content-center flex-column rounded w-100 text-center"
+                    style="height: 200px;">
+                    <!-- <img src="data:image/png;base64,{{ plotly_image }}" alt="Plotly Graph" width="300" height="180"> -->
+                    <h5 class="">95% Statistical
+                        Significance</h5>
+                    {% if isSignificant %}
+                    <h3 class="fw-bold">{{ 'Yes' }}</h3>
+                    {% else %}
+                    <h3 class="fw-bold">{{ 'No' }}</h3>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <canvas id="mainChart"></canvas>
+        </div>
+
+        <div class="my-2">
+            <a href="{{ url_for('labAPI.reach') }}" class="btn btn-warning  fs-6 fw-bold w-25">ชมการเข้าถึง</a>
+        </div>
+
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function createChart(chartType, chartElementId, chartDataConfig) {
+        const ctx = document.getElementById(chartElementId);
+        new Chart(ctx, {
+            type: chartType,
+            data: chartDataConfig.data,
+            options: chartDataConfig.options
+        });
+    }
+
+    // Bar chart data and config
+    const barChartData = {
+        labels: JSON.parse('{{data.bar_chart.labels | tojson | safe}}'),
+        datasets: [
+            {
+                label: 'Web A',
+                data: JSON.parse('{{data.bar_chart.dataA | tojson | safe}}'),
+                borderWidth: 1
+            },
+            {
+                label: 'Web B',
+                data: JSON.parse('{{data.bar_chart.dataB | tojson | safe}}'),
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const barChartConfig = {
+        options: {
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Click Count'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Line chart data and config
+    const lineChartData = {
+        labels: JSON.parse('{{data.line_chart.labels | tojson | safe}}'),
+        datasets: [{
+            label: 'Web A',
+            data: JSON.parse('{{data.line_chart.dataA | tojson | safe}}'),
+            borderColor: "#89CFF0",
+            backgroundColor: "#fff",
+        },
+        {
+            labels: JSON.parse('{{data.line_chart.labels | tojson | safe}}'),
+            label: 'Web B',
+            data: JSON.parse('{{data.line_chart.dataB | tojson | safe}}'),
+            borderColor: "#F8C8DC",
+            backgroundColor: "#fff",
+        }
+        ]
+    };
+
+    const lineChartConfig = {
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Click Count'
+                }
+            }
+        }
+    };
+
+
+    // Bar chart data and config
+    const barChartHorizonConfig = {
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    const barChartHorizonData = {
+        labels: ['Visitors A', 'Visitors B'],
+        datasets: [
+            {
+                label: 'Visitors',
+                data: JSON.parse('{{data.visitors_count.data | tojson | safe}}'),
+                borderWidth: 1,
+                backgroundColor: ['#89CFF0', '#F8C8DC'],
+            },
+        ]
+    };
+
+    // Create charts using the function
+    createChart('bar', 'horizonChart', { data: barChartHorizonData, options: barChartHorizonConfig.options });
+    createChart('bar', 'mainChart', { data: barChartData, options: barChartConfig.options });
+    createChart('line', 'LineChart', { data: lineChartData, options: lineChartConfig.options });
+</script>
+
+
+{% endblock %}
